@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-3 text-white text-uppercase mb-3">Register</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center text-uppercase mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Register</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Register Start -->
+    <div class="container-fluid bg-secondary py-5">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="text-center mb-4">
+                        <div class="title">
+                            <div class="title-center">
+                                <h5>Create Account</h5>
+                                <h1>Register Member</h1>
+                            </div>
+                        </div>
+                        <p class="text-muted">Register to get personalized slots booking, upcoming/previous tracking, and services ratings.</p>
+                    </div>
+                    
+                    <div class="card-custom">
+                        <form action="{{ url_for('register') }}" method="POST" enctype="multipart/form-data">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" name="name" class="form-control bg-dark border-0 text-white rounded-pill" id="name" placeholder="Your Name" required>
+                                        <label for="name" class="text-muted">Full Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" name="phone" class="form-control bg-dark border-0 text-white rounded-pill" id="phone" placeholder="Phone Number" required>
+                                        <label for="phone" class="text-muted">Phone Number</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" name="email" class="form-control bg-dark border-0 text-white rounded-pill" id="email" placeholder="Your Email" required>
+                                        <label for="email" class="text-muted">Email Address</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" name="location" class="form-control bg-dark border-0 text-white rounded-pill" id="location" placeholder="Location" required>
+                                        <label for="location" class="text-muted">Location (City/Town)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group bg-dark border-0 p-2 text-muted" style="border-radius: 30px; height: 58px; padding-left: 20px !important;">
+                                        <label for="image" class="small d-block mb-1">Profile Image</label>
+                                        <input type="file" name="image" id="image" class="form-control-file text-white small" accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="password" name="password" class="form-control bg-dark border-0 text-white rounded-pill" id="password" placeholder="Password" required>
+                                        <label for="password" class="text-muted">Password</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button class="btn btn-primary w-100 py-3 rounded-pill" type="submit">Create Account</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="text-center mt-3 text-muted">
+                            Already have an account? <a href="{{ url_for('login') }}" class="text-primary">Login here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Register End -->
+
+{% endblock %}

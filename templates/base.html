@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Sreya's Studios - Beauty Parlour & Appointments</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Beauty Parlour, Appointment Booking, Sreya's Studios, panoor, Thalassery" name="keywords">
+    <meta content="Book premium beauty parlour appointments at Sreya's Studios, panoor, Thalassery." name="description">
+
+    <!-- Favicon -->
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;700&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{ url_for('static', filename='lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    
+    <style>
+        /* Extra custom styles for premium beauty studio theme */
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        .navbar-dark .navbar-nav .nav-link:hover,
+        .navbar-dark .navbar-nav .nav-link.active {
+            color: #C2A25B !important; /* Gold tone for active/hover */
+        }
+        .text-primary {
+            color: #C2A25B !important;
+        }
+        .btn-primary {
+            background-color: #C2A25B !important;
+            border-color: #C2A25B !important;
+            color: #fff !important;
+        }
+        .btn-primary:hover {
+            background-color: #a88842 !important;
+            border-color: #a88842 !important;
+        }
+        .btn-outline-primary {
+            color: #C2A25B !important;
+            border-color: #C2A25B !important;
+        }
+        .btn-outline-primary:hover {
+            background-color: #C2A25B !important;
+            color: #fff !important;
+        }
+        .bg-secondary {
+            background-color: #191c24 !important; /* Rich dark bg */
+        }
+        .border-primary {
+            border-color: #C2A25B !important;
+        }
+        .profile-img-nav {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border: 2px solid #C2A25B;
+        }
+        .alert-dismissible .btn-close {
+            filter: invert(1);
+        }
+        .rating-stars {
+            color: #ffc107;
+        }
+        .card-custom {
+            background-color: #191c24;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .form-control-custom {
+            background-color: #0c0e12;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            border-radius: 30px;
+            padding: 12px 20px;
+        }
+        .form-control-custom:focus {
+            background-color: #0c0e12;
+            border-color: #C2A25B;
+            color: #fff;
+            box-shadow: none;
+        }
+        /* Floating Toast Alert styling */
+        .flash-container {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            z-index: 999999;
+            min-width: 300px;
+            max-width: 400px;
+        }
+        .flash-toast {
+            background-color: #191c24 !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            animation: slideIn 0.3s ease-in-out;
+        }
+        @keyframes slideIn {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Header/Navbar Start -->
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-lg-5 py-3 py-lg-0">
+            <a href="{% if is_admin %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('index') }}{% endif %}" class="navbar-brand ms-4 ms-lg-0">
+                <h2 class="mb-0 text-primary text-uppercase"><i class="fa fa-spa me-2"></i>Sreya's Studios</h2>
+            </a>
+            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav mx-auto p-4 p-lg-0">
+                    {% if is_admin %}
+                        <!-- Admin Specific Menu -->
+                        <a href="{{ url_for('admin_dashboard') }}" class="nav-item nav-link {% if request.path == '/admin' %}active{% endif %}">Manage Services</a>
+                        <a href="{{ url_for('admin_slots') }}" class="nav-item nav-link {% if request.path == '/admin/slots' %}active{% endif %}">Manage Slots</a>
+                        <a href="{{ url_for('admin_bookings') }}" class="nav-item nav-link {% if request.path == '/admin/bookings' %}active{% endif %}">Customer Bookings</a>
+                        <a href="{{ url_for('testimonial') }}" class="nav-item nav-link {% if request.path == '/testimonial' %}active{% endif %}">Reviews</a>
+                    {% else %}
+                        <!-- Customer / Guest Menu -->
+                        <a href="{{ url_for('index') }}" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
+                        <a href="{{ url_for('about') }}" class="nav-item nav-link {% if request.path == '/about' %}active{% endif %}">About</a>
+                        <a href="{{ url_for('services') }}" class="nav-item nav-link {% if request.path == '/services' %}active{% endif %}">Services</a>
+                        
+                        {% if is_logged_in %}
+                            <a href="{{ url_for('bookings') }}" class="nav-item nav-link {% if request.path == '/bookings' %}active{% endif %}">My Bookings</a>
+                            <a href="{{ url_for('profile') }}" class="nav-item nav-link {% if request.path == '/profile' %}active{% endif %}">My Profile</a>
+                        {% endif %}
+                        
+                        <a href="{{ url_for('testimonial') }}" class="nav-item nav-link {% if request.path == '/testimonial' %}active{% endif %}">Reviews</a>
+                        <a href="{{ url_for('contact') }}" class="nav-item nav-link {% if request.path == '/contact' %}active{% endif %}">Contact</a>
+                    {% endif %}
+                </div>
+                
+                <div class="d-flex align-items-center ms-4 ms-lg-0 py-3 py-lg-0">
+                    {% if is_logged_in %}
+                        <div class="d-flex align-items-center text-white me-3">
+                            {% if is_admin %}
+                                <i class="fa fa-user-shield me-2 text-primary"></i>
+                            {% else %}
+                                <img src="{{ url_for('static', filename='uploads/' + user_image) }}" class="rounded-circle profile-img-nav me-2" alt="User Image">
+                            {% endif %}
+                            <span>{{ user_name }}</span>
+                        </div>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline-primary border-2">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-primary border-2 me-2">Login</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-primary border-2">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Header/Navbar End -->
+
+    <!-- Floating Flash Messages Container -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="alert flash-toast border-0 alert-dismissible fade show p-3" role="alert" style="border-left: 5px solid {% if category == 'success' %}#198754{% elif category in ['danger', 'error'] %}#dc3545{% else %}#ffc107{% endif %} !important;">
+                        <div class="d-flex align-items-center">
+                            {% if category == 'success' %}
+                                <i class="fa fa-check-circle text-success me-2 fs-5"></i>
+                            {% elif category in ['danger', 'error'] %}
+                                <i class="fa fa-times-circle text-danger me-2 fs-5"></i>
+                            {% else %}
+                                <i class="fa fa-info-circle text-warning me-2 fs-5"></i>
+                            {% endif %}
+                            <div class="text-white">{{ message }}</div>
+                        </div>
+                        <button type="button" class="btn-close text-white" data-bs-dismiss="alert" aria-label="Close" style="top: 15px; right: 10px; filter: invert(1);"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content Block -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer py-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <a href="{{ url_for('index') }}">
+                <h1 class="display-4 mb-3 text-white text-uppercase"><i class="fa fa-spa me-2 text-primary"></i>Sreya's Studios</h1>
+            </a>
+            
+            <div class="row justify-content-center mb-3">
+                <div class="col-md-4 text-center">
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-2 text-primary"></i>panoor, Thalassery</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <p class="mb-2"><i class="fa fa-phone-alt me-2 text-primary"></i>6238437931</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <p class="mb-2"><i class="fa fa-envelope me-2 text-primary"></i>Sreya@gmail.com</p>
+                </div>
+            </div>
+            
+            <p class="mb-0">&copy; <a class="border-bottom text-primary" href="#">Sreya's Studios</a>, All Rights Reserved.</p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-outline-primary border-2 btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/wow/wow.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/lightbox/js/lightbox.min.js') }}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

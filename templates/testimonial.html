@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-3 text-white text-uppercase mb-3">Testimonial</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center text-uppercase mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Testimonial</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Testimonial Start -->
+    <div class="container-fluid py-5 bg-secondary">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <div class="title wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="title-center">
+                        <h5>Reviews</h5>
+                        <h1>What Our Clients Say</h1>
+                    </div>
+                </div>
+            </div>
+            
+            {% if reviews %}
+                <div class="row g-4 justify-content-center">
+                    {% for review in reviews %}
+                        <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
+                            <div class="card-custom h-100 d-flex flex-column text-white">
+                                <div class="rating-stars mb-2">
+                                    {% for _ in range(review.rating) %}
+                                        <i class="fa fa-star text-warning"></i>
+                                    {% endfor %}
+                                    {% for _ in range(5 - review.rating) %}
+                                        <i class="fa-regular fa-star text-muted"></i>
+                                    {% endfor %}
+                                </div>
+                                <p class="mb-3 flex-grow-1">"{{ review.review }}"</p>
+                                <div class="border-top pt-2">
+                                    <h5 class="text-primary text-uppercase mb-0">{{ review.user_name }}</h5>
+                                    <small class="text-muted">Service: {{ review.service_name }} ({{ review.date }})</small>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="testimonial-item text-center" data-dot="<img class='img-fluid' src='{{ url_for('static', filename='img/testimonial-1.jpg') }}' alt=''>">
+                        <p class="fs-5">"Sreya is absolutely amazing! She did my bridal makeover and I could not have asked for a more perfect look. The skin preparation was so soothing."</p>
+                        <h5 class="text-uppercase text-white">Meera Kumar</h5>
+                        <span class="text-primary">Bridal Makeup</span>
+                    </div>
+                    <div class="testimonial-item text-center" data-dot="<img class='img-fluid' src='{{ url_for('static', filename='img/testimonial-2.jpg') }}' alt=''>">
+                        <p class="fs-5">"I regularly visit Sreya's Studios for my monthly hair spa and skincare routine. The ambiance is very relaxing and the rates are very affordable."</p>
+                        <h5 class="text-uppercase text-white">Lana Anderson</h5>
+                        <span class="text-primary">Hair Spa & Facial</span>
+                    </div>
+                    <div class="testimonial-item text-center" data-dot="<img class='img-fluid' src='{{ url_for('static', filename='img/testimonial-3.jpg') }}' alt=''>">
+                        <p class="fs-5">"Highly recommend their nail extension and nail art! Riya did an outstanding job, very creative work. The place is extremely hygienic."</p>
+                        <h5 class="text-uppercase text-white">Pamela Torney</h5>
+                        <span class="text-primary">Nail Artistry</span>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Testimonial End -->
+
+{% endblock %}

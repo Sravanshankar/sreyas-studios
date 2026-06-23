@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-3 text-white text-uppercase mb-3">Book Appointment</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center text-uppercase mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="{{ url_for('services') }}">Services</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Book</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Payment and Slot Booking Start -->
+    <div class="container-fluid bg-secondary py-5">
+        <div class="container py-5">
+            <div class="row g-5">
+                
+                <!-- Service Detail Card -->
+                <div class="col-lg-5 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="title">
+                        <div class="title-left">
+                            <h5>Selected Service</h5>
+                            <h1>Booking Detail</h1>
+                        </div>
+                    </div>
+                    <div class="card-custom text-white border border-primary text-center py-4">
+                        <img class="img-fluid rounded-circle mb-3 mx-auto" src="{{ url_for('static', filename='img/' + service.image_path) }}" alt="{{ service.name }}" style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #C2A25B;">
+                        <h3 class="text-uppercase text-primary">{{ service.name }}</h3>
+                        <h4 class="mb-3 text-white">Price: ₹ {{ service.price }}</h4>
+                        <p class="text-muted px-3">{{ service.description }}</p>
+                    </div>
+                </div>
+
+                <!-- Payment Selection and Slot Selector Form -->
+                <div class="col-lg-7 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="title">
+                        <div class="title-left">
+                            <h5>Step 1 & 2</h5>
+                            <h1>Payment & Time Slot</h1>
+                        </div>
+                    </div>
+                    
+                    <div class="card-custom text-white">
+                        <form action="{{ url_for('book_service_flow', service_id=service.id) }}" method="POST" id="bookingForm">
+                            
+                            <!-- 1. Select Payment Method -->
+                            <div class="mb-4">
+                                <h5 class="text-primary text-uppercase border-bottom pb-2 mb-3"><i class="fa fa-credit-card me-2"></i>Select Payment Method</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-dark border rounded-3 position-relative" style="cursor: pointer;" onclick="document.getElementById('pay_online').checked = true; updatePaymentSelection();">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="payment_method" id="pay_online" value="Online (Razorpay)" checked required>
+                                                <label class="form-check-label text-white fw-bold" for="pay_online">
+                                                    Online Payment
+                                                </label>
+                                            </div>
+                                            <small class="text-muted d-block mt-2">Pay securely using Credit Card, Debit Card, UPI, or NetBanking via **Razorpay** checkout.</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-dark border rounded-3 position-relative" style="cursor: pointer;" onclick="document.getElementById('pay_cash').checked = true; updatePaymentSelection();">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="payment_method" id="pay_cash" value="Offline (Cash)" required>
+                                                <label class="form-check-label text-white fw-bold" for="pay_cash">
+                                                    Pay Cash (Offline)
+                                                </label>
+                                            </div>
+                                            <small class="text-muted d-block mt-2">Book the slot now, and pay cash directly at the salon counter during your appointment.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2. Select Booking Slot -->
+                            <div class="mb-4 mt-5">
+                                <h5 class="text-primary text-uppercase border-bottom pb-2 mb-3"><i class="fa fa-calendar-alt me-2"></i>Select Available Slot</h5>
+                                {% if not slots %}
+                                    <div class="alert alert-warning bg-dark text-white border-warning">
+                                        <i class="fa fa-exclamation-triangle me-2"></i>No available booking slots are listed for this service right now. Please check back later or contact Sreya's Studios.
+                                    </div>
+                                {% else %}
+                                    <div class="row g-3">
+                                        {% for slot in slots %}
+                                            <div class="col-sm-6">
+                                                <div class="p-3 bg-dark border rounded-pill text-center select-slot-card position-relative" style="cursor: pointer;" id="slot-card-{{ slot.id }}" onclick="selectSlot({{ slot.id }});">
+                                                    <input type="radio" name="slot_id" id="slot-{{ slot.id }}" value="{{ slot.id }}" class="position-absolute opacity-0" required>
+                                                    <label for="slot-{{ slot.id }}" style="cursor: pointer;" class="mb-0 text-white w-100">
+                                                        <i class="fa fa-clock me-1 text-primary"></i> {{ slot.date }} @ {{ slot.time }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                             <!-- Hidden Payment Status Field -->
+                             <input type="hidden" name="payment_status" id="payment_status" value="Pending">
+
+                             <!-- Action button -->
+                             {% if slots %}
+                                 <div class="mt-4 pt-2">
+                                     <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill text-uppercase fw-bold" id="submitBtn">
+                                         Proceed to Online Payment
+                                     </button>
+                                 </div>
+                             {% endif %}
+                             
+                         </form>
+                     </div>
+                 </div>
+
+             </div>
+         </div>
+     </div>
+
+     <!-- Razorpay Checkout Modal Overlay -->
+     <div class="modal fade" id="razorpayModal" tabindex="-1" aria-labelledby="razorpayModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+         <div class="modal-dialog modal-dialog-centered">
+             <div class="modal-content bg-white text-dark" style="border-radius: 12px; overflow: hidden; border: none;">
+                 <!-- Header -->
+                 <div class="modal-header border-0 text-white p-3 d-flex justify-content-between align-items-center" style="background-color: #0b2545;">
+                     <h5 class="modal-title fw-bold text-white mb-0" id="razorpayModalLabel" style="font-size: 18px; letter-spacing: 0.5px;">
+                         <i class="fa-solid fa-bolt text-primary me-2"></i>Razorpay
+                     </h5>
+                     <div class="text-end text-white">
+                         <p class="mb-0 small font-weight-bold" style="font-weight:600;">{{ service.name }}</p>
+                         <p class="mb-0 text-primary fw-bold fs-5">₹{{ service.price }}</p>
+                     </div>
+                 </div>
+                 
+                 <!-- Modal Body -->
+                 <div class="modal-body p-4 bg-light">
+                     <!-- Form View -->
+                     <div id="razorpayFormArea">
+                         <p class="text-muted small mb-3 text-uppercase fw-bold">Select Payment Option</p>
+                         
+                         <!-- Card Option -->
+                         <div class="p-3 bg-white border rounded-3 position-relative mb-2 payment-tab active" id="modalTabCard" onclick="switchModalTab('card')" style="cursor: pointer;">
+                             <div class="fw-bold text-dark"><i class="fa-solid fa-credit-card me-2 text-primary"></i>Card</div>
+                             <small class="text-muted" style="font-size: 11px;">Visa, MasterCard, RuPay, Maestro</small>
+                         </div>
+                         
+                         <!-- Card fields -->
+                         <div class="p-3 bg-white rounded-3 border mb-3 form-panel" id="modalFormCard" style="border-style: dashed !important;">
+                             <div class="mb-2">
+                                 <label class="small text-muted fw-bold mb-1">Card Number</label>
+                                 <input type="text" class="form-control form-control-sm text-dark bg-light border-secondary" id="modalCardNumber" placeholder="4111 1111 1111 1111" maxlength="19">
+                             </div>
+                             <div class="row">
+                                 <div class="col-6">
+                                     <label class="small text-muted fw-bold mb-1">Expiry Date</label>
+                                     <input type="text" class="form-control form-control-sm text-dark bg-light border-secondary" id="modalCardExpiry" placeholder="MM/YY" maxlength="5">
+                                 </div>
+                                 <div class="col-6">
+                                     <label class="small text-muted fw-bold mb-1">CVV</label>
+                                     <input type="password" class="form-control form-control-sm text-dark bg-light border-secondary" id="modalCardCvv" placeholder="123" maxlength="3">
+                                 </div>
+                             </div>
+                         </div>
+
+                         <!-- UPI Option -->
+                         <div class="p-3 bg-white border rounded-3 position-relative mb-2 payment-tab" id="modalTabUpi" onclick="switchModalTab('upi')" style="cursor: pointer;">
+                             <div class="fw-bold text-dark"><i class="fa-solid fa-mobile-screen-button me-2 text-primary"></i>UPI / QR</div>
+                             <small class="text-muted" style="font-size: 11px;">Google Pay, PhonePe, Paytm, BHIM</small>
+                         </div>
+                         
+                         <!-- UPI fields -->
+                         <div class="p-3 bg-white rounded-3 border mb-3 form-panel" id="modalFormUpi" style="display: none; border-style: dashed !important;">
+                             <div class="mb-2">
+                                 <label class="small text-muted fw-bold mb-1">Enter UPI ID</label>
+                                 <input type="text" class="form-control form-control-sm text-dark bg-light border-secondary" id="modalUpiId" placeholder="username@upi">
+                             </div>
+                         </div>
+
+                         <!-- Pay Button -->
+                         <button type="button" class="btn btn-primary w-100 py-3 mt-3 fw-bold text-uppercase" id="modalPayBtn" onclick="processModalPayment()" style="background-color: #3399ff !important; border-color: #3399ff !important; border-radius: 8px;">
+                             <span class="spinner-border spinner-border-sm me-2" role="status" id="modalSpinner" style="display:none; width: 16px; height: 16px;"></span>
+                             <span id="modalPayBtnText">Pay ₹{{ service.price }}</span>
+                         </button>
+                         <button type="button" class="btn btn-sm btn-link w-100 text-center text-muted mt-2 text-decoration-none" data-bs-dismiss="modal">Cancel Payment</button>
+                     </div>
+                     
+                     <!-- Success View -->
+                     <div class="text-center py-4" id="razorpaySuccessArea" style="display:none;">
+                         <i class="fa-regular fa-circle-check text-success display-3 mb-3 animate__animated animate__zoomIn"></i>
+                         <h4 class="fw-bold text-dark mb-1">Payment Successful</h4>
+                         <p class="text-muted small">Transaction ID: pay_SREYA_MOCK_{{ service.id }}XYZ</p>
+                         <div class="spinner-grow text-success spinner-grow-sm mt-3" role="status"></div>
+                         <p class="text-muted small mt-2">Finalizing appointment booking...</p>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+     <style>
+         .select-slot-card {
+             transition: all 0.3s ease;
+         }
+         .select-slot-card:hover {
+             border-color: #C2A25B !important;
+             transform: scale(1.02);
+         }
+         .slot-selected {
+             background-color: #C2A25B !important;
+             border-color: #C2A25B !important;
+         }
+         .slot-selected label {
+             color: #000 !important;
+             font-weight: bold;
+         }
+         .slot-selected i {
+             color: #000 !important;
+         }
+         .payment-tab.active {
+             border-color: #3399ff !important;
+             background-color: #f0f7ff !important;
+         }
+     </style>
+
+     <script>
+         function updatePaymentSelection() {
+             var isOnline = document.getElementById('pay_online').checked;
+             var submitBtn = document.getElementById('submitBtn');
+             if (submitBtn) {
+                 if (isOnline) {
+                     submitBtn.innerText = "Proceed to Online Payment";
+                 } else {
+                     submitBtn.innerText = "Confirm Offline Cash Booking";
+                 }
+             }
+         }
+
+         function selectSlot(slotId) {
+             var selectedCards = document.querySelectorAll('.slot-selected');
+             selectedCards.forEach(function(card) {
+                 card.classList.remove('slot-selected');
+             });
+
+             var radio = document.getElementById('slot-' + slotId);
+             if (radio) {
+                 radio.checked = true;
+             }
+
+             var card = document.getElementById('slot-card-' + slotId);
+             if (card) {
+                 card.classList.add('slot-selected');
+             }
+         }
+         
+         window.onload = function() {
+             updatePaymentSelection();
+             
+             // Form submission handler
+             var form = document.getElementById('bookingForm');
+             if (form) {
+                 form.addEventListener('submit', function(e) {
+                     // Check if online payment selected
+                     var isOnline = document.getElementById('pay_online').checked;
+                     var currentStatus = document.getElementById('payment_status').value;
+                     
+                     if (isOnline && currentStatus !== 'Paid') {
+                         e.preventDefault();
+                         
+                         // Open Razorpay Modal popup
+                         var rModal = new bootstrap.Modal(document.getElementById('razorpayModal'));
+                         rModal.show();
+                     }
+                 });
+             }
+             
+             // Format Card inputs inside modal
+             var cardInput = document.getElementById('modalCardNumber');
+             if (cardInput) {
+                 cardInput.addEventListener('input', function (e) {
+                     e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
+                 });
+             }
+             
+             var expiryInput = document.getElementById('modalCardExpiry');
+             if (expiryInput) {
+                 expiryInput.addEventListener('input', function (e) {
+                     var val = e.target.value.replace(/[^\d]/g, '');
+                     if (val.length > 2) {
+                         e.target.value = val.substring(0, 2) + '/' + val.substring(2, 4);
+                     } else {
+                         e.target.value = val;
+                     }
+                 });
+             }
+         };
+
+         // Modal Tab switcher
+         function switchModalTab(type) {
+             document.querySelectorAll('.payment-tab').forEach(tab => tab.classList.remove('active'));
+             document.querySelectorAll('.form-panel').forEach(panel => panel.style.display = 'none');
+             
+             if (type === 'card') {
+                 document.getElementById('modalTabCard').classList.add('active');
+                 document.getElementById('modalFormCard').style.display = 'block';
+             } else if (type === 'upi') {
+                 document.getElementById('modalTabUpi').classList.add('active');
+                 document.getElementById('modalFormUpi').style.display = 'block';
+             }
+         }
+
+         // Process online payment popup simulation
+         function processModalPayment() {
+             var activeTab = document.querySelector('.payment-tab.active').id;
+             
+             // Validation
+             if (activeTab === 'modalTabCard') {
+                 var num = document.getElementById('modalCardNumber').value.trim();
+                 var exp = document.getElementById('modalCardExpiry').value.trim();
+                 var cvv = document.getElementById('modalCardCvv').value.trim();
+                 if (!num || !exp || !cvv) {
+                     alert("Please enter simulated card details.");
+                     return;
+                 }
+             } else if (activeTab === 'modalTabUpi') {
+                 var upi = document.getElementById('modalUpiId').value.trim();
+                 if (!upi) {
+                     alert("Please enter simulated UPI ID.");
+                     return;
+                 }
+             }
+
+             // Show spinner
+             document.getElementById('modalPayBtn').disabled = true;
+             document.getElementById('modalSpinner').style.display = 'inline-block';
+             document.getElementById('modalPayBtnText').innerText = "Verifying Transaction...";
+
+             // Simulate gateway payment completion
+             setTimeout(function() {
+                 document.getElementById('razorpayFormArea').style.display = 'none';
+                 document.getElementById('razorpaySuccessArea').style.display = 'block';
+                 
+                 // Submit main form after checkmark animation completes
+                 setTimeout(function() {
+                     document.getElementById('payment_status').value = 'Paid';
+                     document.getElementById('bookingForm').submit();
+                 }, 2000);
+
+             }, 2000);
+         }
+     </script>
+
+{% endblock %}

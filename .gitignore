@@ -1,0 +1,21 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Databases
+database.db
+
+# Local uploads and instance data
+instance/
+static/uploads/*
+!static/uploads/default-user.jpg
+!static/uploads/admin.png

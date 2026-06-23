@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-3 text-white text-uppercase mb-3">Login</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center text-uppercase mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Login</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Login Start -->
+    <div class="container-fluid bg-secondary py-5">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="text-center mb-4">
+                        <div class="title">
+                            <div class="title-center">
+                                <h5>Welcome Back</h5>
+                                <h1>Sign In To Account</h1>
+                            </div>
+                        </div>
+                        <p class="text-muted">Enter your email and password to access bookings, slot management, and reviews.</p>
+                    </div>
+                    
+                    <div class="card-custom">
+                        <form action="{{ url_for('login') }}" method="POST">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="email" name="email" class="form-control bg-dark border-0 text-white rounded-pill" id="email" placeholder="Your Email" required>
+                                        <label for="email" class="text-muted">Email Address</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="password" name="password" class="form-control bg-dark border-0 text-white rounded-pill" id="password" placeholder="Your Password" required>
+                                        <label for="password" class="text-muted">Password</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button class="btn btn-primary w-100 py-3 rounded-pill" type="submit">Sign In</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="text-center mt-3 text-muted">
+                            Don't have an account yet? <a href="{{ url_for('register') }}" class="text-primary">Register here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login End -->
+
+{% block content_end %}{% endblock %}
+{% endblock %}

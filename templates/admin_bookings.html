@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-3 text-white text-uppercase mb-3">Customer Bookings</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center text-uppercase mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Customer Bookings</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Bookings Manager Start -->
+    <div class="container-fluid bg-secondary py-5">
+        <div class="container py-5">
+            
+            <!-- Tab Menu -->
+            <ul class="nav nav-pills justify-content-center mb-5" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active rounded-pill text-uppercase px-4 fw-bold text-white border border-primary me-2" id="pills-upcoming-tab" data-bs-toggle="pill" data-bs-target="#pills-upcoming" type="button" role="tab" aria-controls="pills-upcoming" aria-selected="true" style="background-color: #191c24;">
+                        Upcoming Appointments
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-pill text-uppercase px-4 fw-bold text-white border border-primary" id="pills-history-tab" data-bs-toggle="pill" data-bs-target="#pills-history" type="button" role="tab" aria-controls="pills-history" aria-selected="false" style="background-color: #191c24;">
+                        Completed History
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="pills-tabContent">
+                
+                <!-- 1. Upcoming Appointments Tab -->
+                <div class="tab-pane fade show active" id="pills-upcoming" role="tabpanel" aria-labelledby="pills-upcoming-tab">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            {% set upcoming_bookings = bookings | selectattr("status", "equalto", "Upcoming") | list %}
+                            
+                            {% if not upcoming_bookings %}
+                                <div class="card-custom text-center text-muted py-5">
+                                    <i class="fa fa-calendar-times fa-3x text-primary mb-3"></i>
+                                    <h5>No upcoming appointments booked.</h5>
+                                    <p class="mb-0">When clients book slots, they will appear here.</p>
+                                </div>
+                            {% else %}
+                                <div class="row g-4">
+                                    {% for booking in upcoming_bookings %}
+                                        <div class="col-md-12">
+                                            <div class="card-custom text-white border-left-primary">
+                                                <div class="row align-items-center">
+                                                    <!-- Client Profile Info -->
+                                                    <div class="col-lg-4 border-end border-secondary mb-3 mb-lg-0">
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <img class="img-fluid rounded-circle me-3" src="{{ url_for('static', filename='uploads/' + (booking.user_image or 'default-user.jpg')) }}" alt="{{ booking.user_name }}" style="width: 55px; height: 55px; object-fit: cover; border: 2px solid #C2A25B;">
+                                                            <div>
+                                                                <h5 class="text-primary text-uppercase mb-0">{{ booking.user_name }}</h5>
+                                                                <small class="text-muted"><i class="fa fa-map-marker-alt me-1 text-primary"></i>{{ booking.user_location }}</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="small pt-2 border-top border-secondary">
+                                                            <p class="mb-1"><i class="fa fa-phone text-primary me-2"></i>{{ booking.user_phone }}</p>
+                                                            <p class="mb-0"><i class="fa fa-envelope text-primary me-2"></i>{{ booking.user_email }}</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Booking Details -->
+                                                    <div class="col-lg-5 mb-3 mb-lg-0">
+                                                        <div class="ps-lg-3">
+                                                            <h5 class="text-uppercase mb-2 text-white">{{ booking.service_name }}</h5>
+                                                            <div class="row small g-2">
+                                                                <div class="col-6">
+                                                                    <p class="mb-1"><i class="fa fa-calendar text-primary me-2"></i><strong>Date:</strong> {{ booking.date }}</p>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <p class="mb-1"><i class="fa fa-clock text-primary me-2"></i><strong>Time:</strong> {{ booking.time }}</p>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <p class="mb-1"><i class="fa fa-wallet text-primary me-2"></i><strong>Price:</strong> ₹ {{ booking.service_price }}</p>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <p class="mb-1"><i class="fa fa-credit-card text-primary me-2"></i><strong>Mode:</strong> {{ booking.payment_method }}</p>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <p class="mb-0"><i class="fa fa-info-circle text-primary me-2"></i><strong>Payment:</strong> <span class="badge bg-{{ 'success' if booking.payment_status == 'Paid' else 'warning text-dark' }}">{{ booking.payment_status }}</span></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Actions -->
+                                                    <div class="col-lg-3 text-lg-end">
+                                                        <form action="{{ url_for('complete_slot', slot_id=booking.id) }}" method="POST" class="d-inline">
+                                                            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 text-uppercase fw-bold w-100 mb-2" style="font-size: 13px;">
+                                                                <i class="fa fa-check-circle me-1"></i>Complete Booking
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2. Completed History Tab -->
+                <div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            {% set completed_bookings = bookings | selectattr("status", "equalto", "Completed") | list %}
+                            
+                            {% if not completed_bookings %}
+                                <div class="card-custom text-center text-muted py-5">
+                                    <i class="fa fa-history fa-3x text-primary mb-3"></i>
+                                    <h5>No completed appointments in history.</h5>
+                                </div>
+                            {% else %}
+                                <div class="row g-4">
+                                    {% for booking in completed_bookings %}
+                                        <div class="col-md-12">
+                                            <div class="card-custom text-white border border-secondary">
+                                                <div class="row">
+                                                    <!-- Client Profile Info -->
+                                                    <div class="col-lg-4 border-end border-secondary mb-3 mb-lg-0">
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <img class="img-fluid rounded-circle me-3" src="{{ url_for('static', filename='uploads/' + (booking.user_image or 'default-user.jpg')) }}" alt="{{ booking.user_name }}" style="width: 55px; height: 55px; object-fit: cover; border: 2px solid #C2A25B;">
+                                                            <div>
+                                                                <h5 class="text-primary text-uppercase mb-0">{{ booking.user_name }}</h5>
+                                                                <small class="text-muted"><i class="fa fa-map-marker-alt me-1 text-primary"></i>{{ booking.user_location }}</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="small pt-2 border-top border-secondary">
+                                                            <p class="mb-1"><i class="fa fa-phone text-primary me-2"></i>{{ booking.user_phone }}</p>
+                                                            <p class="mb-0"><i class="fa fa-envelope text-primary me-2"></i>{{ booking.user_email }}</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Booking Details -->
+                                                    <div class="col-lg-4 border-end border-secondary mb-3 mb-lg-0">
+                                                        <div class="ps-lg-3">
+                                                            <h5 class="text-uppercase mb-2 text-white">{{ booking.service_name }}</h5>
+                                                            <div class="row small g-2">
+                                                                <div class="col-6">
+                                                                    <p class="mb-1"><i class="fa fa-calendar text-primary me-2"></i>{{ booking.date }}</p>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <p class="mb-1"><i class="fa fa-clock text-primary me-2"></i>{{ booking.time }}</p>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <p class="mb-1"><i class="fa fa-wallet text-primary me-2"></i>₹ {{ booking.service_price }}</p>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <p class="mb-1"><i class="fa fa-credit-card text-primary me-2"></i>{{ booking.payment_method }}</p>
+                                                                </div>
+                                                                <div class="col-12 mt-2">
+                                                                    <span class="badge bg-success rounded-pill px-2 py-1"><i class="fa fa-check me-1"></i>Completed</span>
+                                                                    <span class="badge bg-success rounded-pill px-2 py-1"><i class="fa fa-wallet me-1"></i>{{ booking.payment_status }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Ratings & Reviews -->
+                                                    <div class="col-lg-4">
+                                                        <div class="ps-lg-3">
+                                                            <h6 class="text-primary text-uppercase mb-1">Client Feedback:</h6>
+                                                            {% if booking.rating %}
+                                                                <div class="rating-stars mb-2">
+                                                                    {% for _ in range(booking.rating) %}
+                                                                        <i class="fa fa-star text-warning"></i>
+                                                                    {% endfor %}
+                                                                    {% for _ in range(5 - booking.rating) %}
+                                                                        <i class="fa-regular fa-star text-muted"></i>
+                                                                    {% endfor %}
+                                                                </div>
+                                                                <p class="small text-muted mb-0">"{{ booking.review }}"</p>
+                                                            {% else %}
+                                                                <p class="small text-muted mb-0">No rating or review submitted yet.</p>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+    <!-- Bookings Manager End -->
+
+    <style>
+        /* custom CSS for pills styling */
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+            background-color: #C2A25B !important;
+            border-color: #C2A25B !important;
+            color: #fff !important;
+        }
+        .border-left-primary {
+            border-left: 4px solid #C2A25B !important;
+        }
+    </style>
+
+{% endblock %}

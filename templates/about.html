@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-3 text-white text-uppercase mb-3">About Us</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center text-uppercase mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">About</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- About Start -->
+    <div class="container-fluid bg-secondary py-5">
+        <div class="container py-5">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-7 pb-0 pb-lg-5 py-5">
+                    <div class="pb-0 pb-lg-5 py-5">
+                        <div class="title wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="title-left">
+                                <h5>Our Roots</h5>
+                                <h1>Experience the Best Care</h1>
+                            </div>
+                        </div>
+                        <p class="mb-4 wow fadeInUp" data-wow-delay="0.2s">
+                            Established in Panoor, Thalassery, Sreya's Studios is a premium beauty salon curated for those who seek perfection. Under Sreya's direct guidance, the studio is equipped with modern style units, relaxing massage stations, and luxurious cosmetic zones.
+                        </p>
+                        <p class="mb-4 wow fadeInUp" data-wow-delay="0.2s">
+                            We offer standard salon services ranging from hair spa, deep skin conditioning, nail grooming to bridal hair & make-up setups. At Sreya's Studios, customer satisfaction and safety is our top priority. We use only premium international product lines, maintaining strict standards of hygiene.
+                        </p>
+                        
+                        <div class="card bg-dark border-0 p-4 rounded-3 wow fadeInUp" data-wow-delay="0.3s">
+                            <h5 class="text-primary text-uppercase mb-2">Our Quick Info</h5>
+                            <ul class="list-unstyled text-white mb-0">
+                                <li class="mb-2"><i class="fa fa-map-marker-alt text-primary me-2"></i><strong>Location:</strong> panoor, Thalassery</li>
+                                <li class="mb-2"><i class="fa fa-phone-alt text-primary me-2"></i><strong>Contact Number:</strong> 6238437931</li>
+                                <li class="mb-0"><i class="fa fa-clock text-primary me-2"></i><strong>Timings:</strong> 09:00 AM - 08:00 PM (Monday to Sunday)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.5s">
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/about.png') }}" alt="Beauty parlour about image">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-3 text-white text-uppercase mb-3">My Profile</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center text-uppercase mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Profile</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Profile Edit Start -->
+    <div class="container-fluid bg-secondary py-5">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                
+                <!-- Profile Avatar Display Card -->
+                <div class="col-lg-4 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <div class="card-custom text-white border border-primary py-4">
+                        <img class="img-fluid rounded-circle mb-3 mx-auto" src="{{ url_for('static', filename='uploads/' + user.image_path) }}" alt="{{ user.name }}" style="width: 180px; height: 180px; object-fit: cover; border: 3px solid #C2A25B;">
+                        <h3 class="text-uppercase text-primary">{{ user.name }}</h3>
+                        <p class="text-muted"><i class="fa fa-envelope text-primary me-2"></i>{{ user.email }}</p>
+                        <div class="border-top pt-2 mt-2 px-3 text-start small">
+                            <p class="mb-1"><i class="fa fa-phone text-primary me-2"></i><strong>Phone:</strong> {{ user.phone }}</p>
+                            <p class="mb-0"><i class="fa fa-map-marker-alt text-primary me-2"></i><strong>Location:</strong> {{ user.location }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Editing Form -->
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="title">
+                        <div class="title-left">
+                            <h5>Personal Info</h5>
+                            <h1>Edit My Profile</h1>
+                        </div>
+                    </div>
+                    
+                    <div class="card-custom">
+                        <form action="{{ url_for('profile') }}" method="POST" enctype="multipart/form-data">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" name="name" class="form-control bg-dark border-0 text-white rounded-pill" id="name" placeholder="Your Name" value="{{ user.name }}" required>
+                                        <label for="name" class="text-muted">Full Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" name="phone" class="form-control bg-dark border-0 text-white rounded-pill" id="phone" placeholder="Phone Number" value="{{ user.phone }}" required>
+                                        <label for="phone" class="text-muted">Phone Number</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" name="location" class="form-control bg-dark border-0 text-white rounded-pill" id="location" placeholder="Location" value="{{ user.location }}" required>
+                                        <label for="location" class="text-muted">Location (City/Town)</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group bg-dark border-0 p-2 text-muted" style="border-radius: 30px; height: 58px; padding-left: 20px !important;">
+                                        <label for="image" class="small d-block mb-1">Update Profile Picture (Optional)</label>
+                                        <input type="file" name="image" id="image" class="form-control-file text-white small" accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button class="btn btn-primary w-100 py-3 rounded-pill text-uppercase fw-bold" type="submit">Update Profile Details</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Profile Edit End -->
+
+{% endblock %}
