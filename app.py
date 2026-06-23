@@ -120,8 +120,11 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
         
+        email_clean = email.strip().lower() if email else ""
+        password_clean = password.strip() if password else ""
+        
         # 1. Admin login check
-        if email == 'Sreya@gmail.com' and password == 'sreya@123':
+        if email_clean == 'sreya@gmail.com' and password_clean == 'sreya@123':
             session['user_id'] = 'admin'
             session['user_name'] = "Sreya (Admin)"
             session['is_admin'] = True
@@ -130,8 +133,8 @@ def login():
             return redirect(url_for('admin_dashboard'))
             
         # 2. Regular user login check
-        user = query_db('SELECT * FROM users WHERE email = ?', [email], one=True)
-        if user and user['password'] == password: # Simple plaintext comparison as requested/simplified
+        user = query_db('SELECT * FROM users WHERE LOWER(email) = ?', [email_clean], one=True)
+        if user and user['password'] == password_clean: # Simple plaintext comparison as requested/simplified
             session['user_id'] = user['id']
             session['user_name'] = user['name']
             session['is_admin'] = False
