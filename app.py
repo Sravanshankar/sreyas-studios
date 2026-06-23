@@ -1,19 +1,30 @@
 import os
 import sqlite3
-from flask import Flask, render_template, request, redirect, url_for, session, flash, g
+from flask import Flask, render_template, request, redirect, url_for, session, flash, g, send_from_directory
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'sreyas_studios_super_secret_key'
-UPLOAD_FOLDER = os.path.join('static', 'uploads')
+
+# Detect if running on Render with a persistent mount path
+PERSISTENT_DIR = '/data'
+if os.path.exists(PERSISTENT_DIR):
+    DATABASE = os.path.join(PERSISTENT_DIR, 'database.db')
+    UPLOAD_FOLDER = os.path.join(PERSISTENT_DIR, 'uploads')
+else:
+    DATABASE = 'database.db'
+    UPLOAD_FOLDER = os.path.join('static', 'uploads')
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # Ensure upload directory exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Database helper
-DATABASE = 'database.db'
+# Custom route to serve user uploads from persistent directory
+@app.route('/static/uploads/<path:filename>')
+def serve_upload(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 def get_db():
     db = getattr(g, '_database', None)

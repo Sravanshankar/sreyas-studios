@@ -3,7 +3,25 @@ import os
 from datetime import datetime, timedelta
 
 def init_db():
-    db_path = 'database.db'
+    persistent_dir = '/data'
+    if os.path.exists(persistent_dir):
+        db_path = os.path.join(persistent_dir, 'database.db')
+        # Ensure uploads directory exists on persistent volume
+        uploads_dir = os.path.join(persistent_dir, 'uploads')
+        os.makedirs(uploads_dir, exist_ok=True)
+        # Copy default assets if they are present locally but missing in persistent volume
+        import shutil
+        for default_img in ['default-user.jpg', 'admin.png']:
+            src = os.path.join('static', 'uploads', default_img)
+            dst = os.path.join(uploads_dir, default_img)
+            if os.path.exists(src) and not os.path.exists(dst):
+                try:
+                    shutil.copy(src, dst)
+                    print(f"Copied {default_img} to persistent disk uploads directory.")
+                except Exception as e:
+                    print(f"Error copying default asset: {e}")
+    else:
+        db_path = 'database.db'
     
     # Connect and create tables
     conn = sqlite3.connect(db_path)
