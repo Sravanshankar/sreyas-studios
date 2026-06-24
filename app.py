@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.secret_key = 'sreyas_studios_super_secret_key'
+app.secret_key = 'aurora_studios_super_secret_key'
 
 # Detect if running on Render with a persistent mount path
 PERSISTENT_DIR = '/data'
@@ -135,12 +135,12 @@ def login():
         password_clean = password.strip() if password else ""
         
         # 1. Admin login check
-        if email_clean == 'sreya@gmail.com' and password_clean == 'sreya@123':
+        if email_clean == 'sankarsravan6@gmail.com' and password_clean == 'aurora@123':
             session['user_id'] = 'admin'
-            session['user_name'] = "Sreya (Admin)"
+            session['user_name'] = "Aurora (Admin)"
             session['is_admin'] = True
             session['user_image'] = 'admin.png' # Fallback placeholder
-            flash('Welcome back, Admin Sreya!', 'success')
+            flash('Welcome back, Admin Aurora!', 'success')
             return redirect(url_for('admin_dashboard'))
             
         # 2. Regular user login check

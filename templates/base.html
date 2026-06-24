@@ -3,10 +3,17 @@
 
 <head>
     <meta charset="utf-8">
+<<<<<<< HEAD
     <title>Aurora's Studios - Beauty Parlour & Appointments</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Aurora Parlour, Appointment Booking, Aurora's Studios, panoor, Thalassery" name="keywords">
     <meta content="Book premium beauty parlour appointments at Aurora's Studios, panoor, Thalassery." name="description">
+=======
+    <title>Aurora Studios - Beauty Parlour & Appointments</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Beauty Parlour, Appointment Booking, Aurora Studios, panoor, Thalassery" name="keywords">
+    <meta content="Book premium beauty parlour appointments at Aurora Studios, panoor, Thalassery." name="description">
+>>>>>>> 97d3c3b (Rename company to Aurora Studios, update email to sankarsravan6 and update admin credentials)
 
     <!-- Favicon -->
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="icon">
@@ -134,7 +141,7 @@
     <div class="container-fluid p-0">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-lg-5 py-3 py-lg-0">
             <a href="{% if is_admin %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('index') }}{% endif %}" class="navbar-brand ms-4 ms-lg-0">
-                <h2 class="mb-0 text-primary text-uppercase"><i class="fa fa-spa me-2"></i>Sreya's Studios</h2>
+                <h2 class="mb-0 text-primary text-uppercase"><i class="fa fa-spa me-2"></i>Aurora Studios</h2>
             </a>
             <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
@@ -214,7 +221,7 @@
     <div class="container-fluid bg-dark text-light footer py-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container text-center py-5">
             <a href="{{ url_for('index') }}">
-                <h1 class="display-4 mb-3 text-white text-uppercase"><i class="fa fa-spa me-2 text-primary"></i>Aurora's Studios</h1>
+                <h1 class="display-4 mb-3 text-white text-uppercase"><i class="fa fa-spa me-2 text-primary"></i>Aurora Studios</h1>
             </a>
             
             <div class="row justify-content-center mb-3">
@@ -225,11 +232,11 @@
                     <p class="mb-2"><i class="fa fa-phone-alt me-2 text-primary"></i>6238437931</p>
                 </div>
                 <div class="col-md-4 text-center">
-                    <p class="mb-2"><i class="fa fa-envelope me-2 text-primary"></i>Aurora@gmail.com</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-2 text-primary"></i>sankarsravan6@gmail.com</p>
                 </div>
             </div>
             
-            <p class="mb-0">&copy; <a class="border-bottom text-primary" href="#">Aurora's Studios</a>, All Rights Reserved.</p>
+            <p class="mb-0">&copy; <a class="border-bottom text-primary" href="#">Aurora Studios</a>, All Rights Reserved.</p>
         </div>
     </div>
     <!-- Footer End -->
